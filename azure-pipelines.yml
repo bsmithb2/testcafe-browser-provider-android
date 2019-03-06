@@ -20,6 +20,7 @@ steps:
     echo _auth = 0d24f2be-0d03-4932-9f41-0fa748ea93b5 > ~/.npmrc
     echo email = bsmithb2@gmail.com >> ~/.npmrc
     echo 'starting npm install'
+    npm adduser
     npm install
     gulp build
     npm run publish-please
