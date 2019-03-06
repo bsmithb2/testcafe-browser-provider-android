@@ -16,6 +16,7 @@ export default {
         if (await this.getBrowserList().length === 0) 
             throw new Error('No browsers detected by adb, or fault in adb. check your adb devices command');
         
+        await this.killChrome();
         const { stdout, stderr } = await exec('adb shell am set-debug-app --persistent com.android.chrome');
         
         await debug.log('result of setting debug chrome: ' + stdout);
@@ -28,7 +29,16 @@ export default {
     },
 
     async closeBrowser (/* id */) {
-        await debug.log('running closerBrowser');
+        await debug.log('running closeBrowser');
+        
+        await this.killChrome();
+    },
+
+    async killChrome (/* id */) {
+        const { stdout, stderr } = await exec('adb shell am force-stop com.android.chrome');
+
+        await debug.log('result of killing chrome: ' + stdout);
+        await debug.log('error in starting chrome: ' + stderr);
     },
 
     // Optional - implement methods you need, remove other methods
