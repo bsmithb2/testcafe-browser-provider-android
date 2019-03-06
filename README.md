@@ -3,6 +3,15 @@
 
 This is the **android** browser provider plugin for [TestCafe](http://devexpress.github.io/testcafe).
 
+## Build
+
+Build has dependencies
+
+```
+npm install -g gulp 
+npm install -g testcafe
+gulp build
+```
 ## Install
 
 ```
