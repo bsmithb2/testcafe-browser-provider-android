@@ -13,11 +13,13 @@ export default {
     // eslint-disable-next-line no-unused-vars
     async openBrowser (id, pageUrl, browserName) {
         debug.log('running openBrowser' + browserName);
-        if (await this.getBrowserList().length === 0) 
-            throw new Error('No browsers detected by adb, or fault in adb. check your adb devices command');
+        const browsers = await this.getBrowserList();
+
+        if (browsers.length === 0) 
+            throw new Error('No browsers detected by adb, or fault in adb. Check your adb devices command');
         
-        if (!browserName && await this.getBrowserList().length === 1)
-            debug.log('running in single device mode...');
+        if (browsers.length === 1)
+            debug.log('One device found. Running in single device mode... Ignoring Browsername if provided');
 
         await this.killChrome();
         await this.clearChrome();
@@ -32,15 +34,11 @@ export default {
 
     async openChromeBrowser (/* id, */ url) {
         await debug.log('running openBrowser with url:' + url);
-        //let shellCmd = 'adb shell am start -n com.android.chrome/com.google.android.apps.chrome.Main ';
         let shellCmd = 'adb shell am start -n com.android.chrome/com.google.android.apps.chrome.Main ';
         
-        // eslint-disable-next-line curly
-        if (url && url.length > 0) {
+        if (url && url.length > 0)
             shellCmd += '-d \'' + url + '\'';
-            //shellCmd += '"' + url + '"';
-
-        }
+        
         shellCmd += ' --activity-clear-task';
         debug.log('start chrome command: ' + shellCmd);
         await exec(shellCmd);
@@ -80,9 +78,12 @@ export default {
         
         let skip = true;
         
-        await debug.log('---- Device List ----');
-        stdout.split(/\r?\n/).forEach(line => {
+        debug.log('---- Device List ----');
+        var lines = stdout.split(/\r?\n/);
+        
+        for (const lineNum in lines) {
             if (!skip) {
+                const line = lines[lineNum];
                 const device = line.split(/(\t+)/)[0];  
 
                 if (device.length > 0) {
@@ -92,8 +93,8 @@ export default {
             }
             else
                 skip = false;
-        });
-       
+        }
+        
         return devices;
     },
 
