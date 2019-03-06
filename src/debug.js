@@ -1,6 +1,6 @@
 export default {
     
-    log (message) {
+    async log (message) {
         // eslint-disable-next-line no-console
         console.log(message);
     }

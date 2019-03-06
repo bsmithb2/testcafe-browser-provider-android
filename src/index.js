@@ -10,15 +10,25 @@ export default {
 
     // Required - must be implemented
     // Browser control
-    async openBrowser (/* id, pageUrl, browserName */) {
+    // eslint-disable-next-line no-unused-vars
+    async openBrowser (id, pageUrl, browserName) {
         debug.log('running openBrowser');
         if (await this.getBrowserList().length === 0) 
             throw new Error('No browsers detected by adb, or fault in adb. check your adb devices command');
         
+        const { stdout, stderr } = await exec('adb shell am set-debug-app --persistent com.android.chrome');
+        
+        await debug.log('result of setting debug chrome: ' + stdout);
+        await debug.log('error in setting debug chrome: ' + stderr);
+
+        const { stdout2, stderr2 } = await exec('adb shell am start -n com.android.chrome/com.google.android.apps.chrome.Main -d \'' + pageUrl + '\'');
+
+        await debug.log('result of starting chrome: ' + stdout2);
+        await debug.log('error in starting chrome: ' + stderr2);
     },
 
     async closeBrowser (/* id */) {
-        debug.log('running closerBrowser');
+        await debug.log('running closerBrowser');
     },
 
     // Optional - implement methods you need, remove other methods
@@ -38,7 +48,7 @@ export default {
         
         let skip = true;
         
-        debug.log('---- Device List ----')
+        await debug.log('---- Device List ----');
         stdout.split(/\r?\n/).forEach(line => {
             if (!skip) {
                 const device = line.split(/(\t+)/)[0];  
