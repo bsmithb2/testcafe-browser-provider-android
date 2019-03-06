@@ -19,3 +19,12 @@ steps:
     npm install
     gulp build
   displayName: 'npm install and run gulp'
+
+# Publish Build Artifacts
+# Publish build artifacts to Azure Pipelines/TFS or a file share
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
+    artifactName: 'drop' 
+    publishLocation: 'Container' 
+    parallel: false
