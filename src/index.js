@@ -33,8 +33,7 @@ export default {
 
         if (url && url.length > 0) {
             shellCmd += '-d \'' + url + '\'';
-            // eslint-disable-next-line no-console
-            console.log('start chrome command: ' + shellCmd);
+            debug.log('start chrome command: ' + shellCmd);
         }
         await debug.log('running openBrowser2' + url);
         await exec(shellCmd);
