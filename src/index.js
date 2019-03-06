@@ -1,4 +1,4 @@
-import { Debug } from './debug';
+import * as debug from './debug';
 
 const util = require('util');
 const exec = util.promisify(require('child_process').exec);
@@ -30,10 +30,22 @@ export default {
 
     // Browser names handling
     async getBrowserList () {
+        const devices = [];
         const { stdout, stderr } = await exec('adb devices');
         
-        Debug.log('stdout: ' + stdout);
-        Debug.log('stderr:' + stderr);
+        debug.log('stdout: ' + stdout);
+        debug.log('array ');
+        let skip = true;
+
+        stdout.split(/\r?\n/).forEach(line => {
+            if (!skip) 
+                debug.log(line);    
+            else
+                skip = false;
+        });
+        debug.log('stderr:' + stderr);
+        
+        return devices;
     },
 
     async isValidBrowserName (/* browserName */) {
