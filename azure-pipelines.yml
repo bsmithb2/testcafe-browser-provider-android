@@ -16,16 +16,8 @@ steps:
   displayName: 'Install Node.js'
 
 - script: |
-    npm version 0.0.$(Build.BuildId)
+    npm --no-git-tag-version version 0.0.$(Build.BuildId)
     npm install
     gulp build
+    npm run publish-please
   displayName: 'npm install and run gulp'
-
-# Publish Build Artifacts
-# Publish build artifacts to Azure Pipelines/TFS or a file share
-- task: PublishBuildArtifacts@1
-  inputs:
-    pathtoPublish: '$(Agent.BuildDirectory)' 
-    artifactName: 'drop' 
-    publishLocation: 'Container' 
-    parallel: false
