@@ -1,5 +1,5 @@
 # testcafe-browser-provider-android
-[![Build Status](https://travis-ci.org/bsmithb2/testcafe-browser-provider-android.svg)](https://travis-ci.org/bsmithb2/testcafe-browser-provider-android)
+[![Build Status](https://dev.azure.com/BradleySmith0287/testcafe-browser-provider-android/_apis/build/status/bsmithb2.testcafe-browser-provider-android?branchName=master)](https://dev.azure.com/BradleySmith0287/testcafe-browser-provider-android/_build/latest?definitionId=1&branchName=master)
 
 This is the **android** browser provider plugin for [TestCafe](http://devexpress.github.io/testcafe).
 
