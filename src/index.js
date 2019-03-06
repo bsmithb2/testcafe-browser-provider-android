@@ -111,8 +111,15 @@ export default {
         return devices;
     },
 
-    async isValidBrowserName (/* browserName */) {
-        return true;
+    async isValidBrowserName (browserName) {
+        const browsers = await this.getBrowserList();
+        const found = browsers.indexOf(browserName) > -1;
+
+        if (browsers.length === 0)
+            debug.log('No devices returned from adb. Please check your simulators and device connectivity using adb.');
+        else if (!found)
+            debug.log('Browser not found, try:' + JSON.stringify(browsers));
+        return found;
     },
     
 
