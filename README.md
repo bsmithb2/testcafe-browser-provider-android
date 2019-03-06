@@ -16,11 +16,16 @@ npm link
 
 Once that is done - you run it by running a test in testcafe, or commands in testcafe. 
 
+This command lists all android devices locally
 ```
 testcafe -b android
 ```
 
-The above command lists all android devices locally
+This command runs a sample test on an attached android device. 
+
+```
+testcafe android exampletests/test.js
+```
 
 ## Install
 

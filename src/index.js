@@ -11,11 +11,14 @@ export default {
     // Required - must be implemented
     // Browser control
     async openBrowser (/* id, pageUrl, browserName */) {
-        throw new Error('Not implemented!');
+        debug.log('running openBrowser');
+        if (await this.getBrowserList().length === 0) 
+            throw new Error('No browsers detected by adb, or fault in adb. check your adb devices command');
+        
     },
 
     async closeBrowser (/* id */) {
-        throw new Error('Not implemented!');
+        debug.log('running closerBrowser');
     },
 
     // Optional - implement methods you need, remove other methods
@@ -33,16 +36,15 @@ export default {
         const devices = [];
         const { stdout } = await exec('adb devices');
         
-        debug.log('stdout: ' + stdout);
-        debug.log('array ');
         let skip = true;
-
+        
+        debug.log('---- Device List ----')
         stdout.split(/\r?\n/).forEach(line => {
             if (!skip) {
                 const device = line.split(/(\t+)/)[0];  
 
                 if (device.length > 0) {
-                    debug.log('device: ' + device);  
+                    debug.log('device found: ' + device);  
                     devices.push(device);
                 }
             }
