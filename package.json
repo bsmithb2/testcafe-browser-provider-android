@@ -1,6 +1,6 @@
 {
   "name": "testcafe-browser-provider-android",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "android TestCafe browser provider plugin.",
   "repository": "https://github.com/bsmithb2/testcafe-browser-provider-android",
   "homepage": "https://github.com/bsmithb2/testcafe-browser-provider-android",
