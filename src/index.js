@@ -31,20 +31,25 @@ export default {
     // Browser names handling
     async getBrowserList () {
         const devices = [];
-        const { stdout, stderr } = await exec('adb devices');
+        const { stdout } = await exec('adb devices');
         
         debug.log('stdout: ' + stdout);
         debug.log('array ');
         let skip = true;
 
         stdout.split(/\r?\n/).forEach(line => {
-            if (!skip) 
-                debug.log(line);    
+            if (!skip) {
+                const device = line.split(/(\t+)/)[0];  
+
+                if (device.length > 0) {
+                    debug.log('device: ' + device);  
+                    devices.push(device);
+                }
+            }
             else
                 skip = false;
         });
-        debug.log('stderr:' + stderr);
-        
+       
         return devices;
     },
 
