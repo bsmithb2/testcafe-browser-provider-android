@@ -16,6 +16,9 @@ export default {
         if (await this.getBrowserList().length === 0) 
             throw new Error('No browsers detected by adb, or fault in adb. check your adb devices command');
         
+        if (!browserName && await this.getBrowserList().length === 1)
+            debug.log('running in single device mode...');
+
         await this.killChrome();
         await this.clearChrome();
         await this.resetChromeWelcome();
@@ -29,31 +32,23 @@ export default {
 
     async openChromeBrowser (/* id, */ url) {
         await debug.log('running openBrowser with url:' + url);
+        //let shellCmd = 'adb shell am start -n com.android.chrome/com.google.android.apps.chrome.Main ';
         let shellCmd = 'adb shell am start -n com.android.chrome/com.google.android.apps.chrome.Main ';
-
+        
+        // eslint-disable-next-line curly
         if (url && url.length > 0) {
             shellCmd += '-d \'' + url + '\'';
-            debug.log('start chrome command: ' + shellCmd);
+            //shellCmd += '"' + url + '"';
+
         }
-        await debug.log('running openBrowser2' + url);
+        shellCmd += ' --activity-clear-task';
+        debug.log('start chrome command: ' + shellCmd);
         await exec(shellCmd);
 
     },
 
     async resetChromeWelcome (/* id */) {
-        await this.openChromeBrowser(null);
-
-        //ignore welcome
-        await this.keyPress(61);
-        await this.keyPress(61);
-        await this.keyPress(61);
-        await this.keyPress(66);
-
-        //ignore signin
-        await this.keyPress(61);
-        await this.keyPress(66);
-
-        await this.closeBrowser();
+        await exec('adb shell \'echo "chrome --disable-fre --no-default-browser-check --no-first-run" > /data/local/tmp/chrome-command-line\'');
     },
 
     async keyPress (/* id, */ keyId) {
