@@ -10,6 +10,7 @@ Build has dependencies
 ```
 npm install -g gulp 
 npm install -g testcafe
+npm install
 gulp build
 npm link
 ```
