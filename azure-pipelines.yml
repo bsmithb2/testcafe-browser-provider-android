@@ -17,10 +17,8 @@ steps:
 
 - script: |
     npm --no-git-tag-version version 0.0.$(Build.BuildId)
-    echo _auth = 0d24f2be-0d03-4932-9f41-0fa748ea93b5 > ~/.npmrc
-    echo email = bsmithb2@gmail.com >> ~/.npmrc
+    echo //registry.npmjs.org/:_authToken=4bd12538-87c0-4445-9122-7ff31f6a32cf > ~/.npmrc
     echo 'starting npm install'
-    npm adduser
     npm install
     gulp build
     npm run publish-please
