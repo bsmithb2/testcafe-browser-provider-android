@@ -11,7 +11,17 @@ Build has dependencies
 npm install -g gulp 
 npm install -g testcafe
 gulp build
+npm link
 ```
+
+Once that is done - you run it by running a test in testcafe, or commands in testcafe. 
+
+```
+testcafe -b android
+```
+
+The above command lists all android devices locally
+
 ## Install
 
 ```
