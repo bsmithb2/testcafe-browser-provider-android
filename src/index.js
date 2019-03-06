@@ -7,6 +7,7 @@ export default {
     // Multiple browsers support
     isMultiBrowser: true,
 
+    adbCommand: 'adb',
 
     // Required - must be implemented
     // Browser control
@@ -20,11 +21,20 @@ export default {
         
         if (browsers.length === 1)
             debug.log('One device found. Running in single device mode... Ignoring Browsername if provided');
-
-        await this.killChrome();
-        await this.clearChrome();
-        await this.resetChromeWelcome();
-        await this.openChromeBrowser(pageUrl);
+        
+        if (browsers.length > 1 && !browserName) {
+            debug.log('-----Multiple devices detected. Please specify a browser------');
+            throw new Error('Multiple device detection failure');
+        }
+        else {
+            if (browserName) 
+                this.adbCommand = 'adb -s ' + browserName + ' ';
+            
+            await this.killChrome();
+            await this.clearChrome();
+            await this.resetChromeWelcome();
+            await this.openChromeBrowser(pageUrl);
+        }
     },
 
     async closeBrowser (/* id */) {
@@ -34,7 +44,7 @@ export default {
 
     async openChromeBrowser (/* id, */ url) {
         await debug.log('running openBrowser with url:' + url);
-        let shellCmd = 'adb shell am start -n com.android.chrome/com.google.android.apps.chrome.Main ';
+        let shellCmd = this.adbCommand + ' shell am start -n com.android.chrome/com.google.android.apps.chrome.Main ';
         
         if (url && url.length > 0)
             shellCmd += '-d \'' + url + '\'';
@@ -46,19 +56,22 @@ export default {
     },
 
     async resetChromeWelcome (/* id */) {
-        await exec('adb shell \'echo "chrome --disable-fre --no-default-browser-check --no-first-run" > /data/local/tmp/chrome-command-line\'');
+        //new android uses this technique
+        await exec(this.adbCommand + ' shell am set-debug-app --persistent com.android.chrome');
+        //old android uses this technique
+        await exec(this.adbCommand + ' shell \'echo "chrome --disable-fre --no-default-browser-check --no-first-run" > /data/local/tmp/chrome-command-line\'');
     },
 
     async keyPress (/* id, */ keyId) {
-        await exec('adb shell input keyevent ' + keyId);
+        await exec(this.adbCommand + ' shell input keyevent ' + keyId);
     },
 
     async clearChrome (/* id */) {
-        await exec('adb shell pm clear com.android.chrome');
+        await exec(this.adbCommand + 'shell pm clear com.android.chrome');
     },
 
     async killChrome (/* id */) {
-        await exec('adb shell am force-stop com.android.chrome');
+        await exec(this.adbCommand + 'shell am force-stop com.android.chrome');
     },
 
     // Optional - implement methods you need, remove other methods
