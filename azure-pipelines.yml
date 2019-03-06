@@ -16,6 +16,7 @@ steps:
   displayName: 'Install Node.js'
 
 - script: |
+    npm version 0.0.$(Build.BuildId)
     npm install
     gulp build
   displayName: 'npm install and run gulp'
