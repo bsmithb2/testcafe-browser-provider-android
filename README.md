@@ -60,4 +60,4 @@ testCafe
 ```
 
 ## Author
-Bradley Smith (https://bradley-smith.dev)
+Bradley Smith (https://bradleysmith.dev)
