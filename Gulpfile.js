@@ -28,14 +28,14 @@ gulp.task('lint', function () {
         .pipe(eslint.failAfterError());
 });
 
-gulp.task('build', ['clean', 'lint'], function () {
+gulp.task('build', gulp.series(gulp.parallel('clean', 'lint')), function () {
     return gulp
         .src('src/**/*.js')
         .pipe(babel())
         .pipe(gulp.dest('lib'));
 });
 
-gulp.task('test', ['build'], function () {
+gulp.task('test', gulp.series(gulp.parallel('build')), function () {
     return gulp
         .src('test/**.js')
         .pipe(mocha({
