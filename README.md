@@ -3,6 +3,22 @@
 
 This is the **android** browser provider plugin for [TestCafe](http://devexpress.github.io/testcafe).
 
+## Supported Browsers
+
+### Chrome
+
+Note that this plugin resets the Chrome to a freshly installed stated on each test.
+
+HELP NEEDED: Maybe someone finds a way to start Chrome in private/incognito mode instead.
+
+### Firefox
+
+Firefox is started in private mode.
+
+NOTE: Screenshots don't work on firefox yet, due to a problem with testcafe.
+See [testcafe issue #2918](https://github.com/DevExpress/testcafe/issues/2918)
+and [this stackoverflow question](https://stackoverflow.com/questions/55412931/testcafe-screenshot-browser-provider-for-android-crop-js-unable-to-locate-the)
+
 ## Build
 
 Build has dependencies
