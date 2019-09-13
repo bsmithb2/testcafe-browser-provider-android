@@ -85,7 +85,7 @@ export default {
 
     /** Browsers/Devices available through this plugin.
      * 
-     * The format is: `${model}:${deviceId}:${browser.name}`
+     * The format is: `${model}:${deviceId}:${browser.name}` or `${model}:${deviceHostname}:${port}:${browser.name}`
      * i.e. `SM-T580:33001f47b4d9b5f1:firefox`
      *
      * @type {string[]}
@@ -107,7 +107,10 @@ export default {
         if (!browserName) 
             throw new Error('browserName must be specified!');
         
-        const browserNameChunks = browserName.split(':');
+        let browserNameChunks = browserName.split(':');
+
+        // case tcpip - thie deviceId = ${deviceHostname}:${port}
+        if (browserNameChunks.length === 4) browserNameChunks = [browserNameChunks[0], browserNameChunks[1] + ':' + browserNameChunks[2], browserNameChunks[3]];
 
         const deviceId = browserNameChunks[1];
         const browser = browserNameChunks[2];
