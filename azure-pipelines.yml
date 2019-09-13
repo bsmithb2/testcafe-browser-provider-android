@@ -21,5 +21,9 @@ steps:
     echo 'starting npm install'
     npm install
     gulp build
-    npm run publish-please
   displayName: 'npm install and run gulp'
+- script: |
+    npm run publish-please
+  displayName: 'publish'
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+
