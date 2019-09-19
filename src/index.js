@@ -17,13 +17,15 @@
  * https://github.com/DevExpress/testcafe/issues/2918
  * 
  */
+import { promisify } from 'util';
+import { exec as _exec } from 'child_process';
+import { copyFile as _copyFile, unlink as _unlink } from 'fs';
 
 import * as debug from './debug';
-import { renameSync } from 'fs';
 
-const util = require('util');
-const rawShellExec = util.promisify(require('child_process').exec);
-
+const exec = promisify(_exec);
+const copyFile = promisify(_copyFile);
+const unlink = promisify(_unlink);
 
 export default {
     
@@ -287,7 +289,8 @@ export default {
         await this._adbExec(id, 'shell screencap /sdcard/screen.png');
         await this._adbExec(id, 'pull /sdcard/screen.png');
         
-        renameSync('screen.png', screenshotPath);
+        await copyFile('screen.png', screenshotPath);
+        await unlink('screen.png');
     },
 
     // /** Maximizes the browser window.
@@ -306,7 +309,7 @@ export default {
      * @returns {string[]} The resulting shell output.
      */
     async _shellExec (command) {
-        const { stdout } = await rawShellExec(command);
+        const { stdout } = await exec(command);
         const lines = stdout.split(/\r?\n/); // split at line break
         
         // debug.log(`[android] _shellExec(command='${command}') => ${JSON.stringify(lines)}`); 
