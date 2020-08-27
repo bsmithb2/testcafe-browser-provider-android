@@ -179,13 +179,20 @@ export default {
             const deviceId = deviceLine.split(/(\t+)/)[0];  
             
             if (deviceId.length === 0) continue; // not a device
-            
+            debug.log('[android] found device: ' + deviceId);
             const deviceModel = (await this._shellExec(`adb -s ${deviceId} shell getprop ro.vendor.product.model`))[0];
+
+            debug.log('[android] found device model: ' + deviceId);
             
             for (const browser of Object.values(this._browserDefinitions)) {
-                const packageListLines = await this._shellExec(`adb -s ${deviceId} shell cmd package list package ${browser.packageName}`);
-
-                if (packageListLines[0] !== `package:${browser.packageName}`) continue; // package not installed
+                debug.log('[android] checking for browser: ' + browser.packageName);
+            
+                const packageListLines = await this._shellExec(`adb -s ${deviceId} shell pm list package ${browser.packageName}`);
+                
+                if (packageListLines[0] !== `package:${browser.packageName}`) {
+                    debug.log('[android] browser ' + browser.packageName + ' doesnt appear to be installed');   
+                    continue; // package not installed
+                }
                 
                 const alias = `${deviceModel}:${deviceId}:${browser.name}`;
 
