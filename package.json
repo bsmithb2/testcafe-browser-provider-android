@@ -35,11 +35,11 @@
     "babel-preset-es2015-loose": "^7.0.0",
     "babel-preset-stage-3": "^6.11.0",
     "del": "^2.0.0",
-    "gulp": "^4.0.0",
+    "gulp": "^4.0.2",
     "gulp-babel": "^6.1.2",
     "gulp-eslint": "^3.0.1",
     "gulp-mocha": "^6.0.0",
     "node-version": "^1.0.0",
-    "publish-please": "^5.4.3"
+    "publish-please": "^5.5.1"
   }
 }
