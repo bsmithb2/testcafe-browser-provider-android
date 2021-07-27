@@ -6,7 +6,7 @@ var nodeVersion = require('node-version');
 
 
 gulp.task('clean', function () {
-    return del('lib');
+    return del('lib/**');
 });
 
 gulp.task('lint', function () {

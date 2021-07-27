@@ -180,10 +180,10 @@ export default {
             
             if (deviceId.length === 0) continue; // not a device
             debug.log('[android] found device: ' + deviceId);
-            const deviceModel = (await this._shellExec(`adb -s ${deviceId} shell getprop ro.vendor.product.model`))[0];
+            const deviceModel = (await this._shellExec(`adb -s ${deviceId} shell getprop ro.product.vendor.model`))[0];
 
-            debug.log('[android] found device model: ' + deviceId);
-            
+            debug.log('[android] found device model: ' + deviceModel);
+
             for (const browser of Object.values(this._browserDefinitions)) {
                 debug.log('[android] checking for browser: ' + browser.packageName);
             
